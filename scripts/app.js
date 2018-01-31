@@ -19,12 +19,12 @@
      ****************************************************************************/
 
     document.getElementById('butRefresh').addEventListener('click', function () {
-        // Refresh all of the forecasts
+        // Refresh all of the metro stations
         app.updateSchedules();
     });
 
     document.getElementById('butAdd').addEventListener('click', function () {
-        // Open/show the add new city dialog
+        // Open/show the add new station dialog
         app.toggleAddDialog(true);
     });
 
@@ -44,7 +44,7 @@
     });
 
     document.getElementById('butAddCancel').addEventListener('click', function () {
-        // Close the add new city dialog
+        // Close the add new station dialog
         app.toggleAddDialog(false);
     });
 
@@ -55,7 +55,7 @@
      *
      ****************************************************************************/
 
-    // Toggles the visibility of the add new city dialog.
+    // Toggles the visibility of the add new station dialog.
     app.toggleAddDialog = function (visible) {
         if (visible) {
             app.addDialog.classList.add('dialog-container--visible');
@@ -64,7 +64,7 @@
         }
     };
 
-    // Updates a weather card with the latest weather forecast. If the card
+    // Updates a timestation card with the latest weather forecast. If the card
     // doesn't already exist, it's cloned from the template.
 
     app.updateTimetableCard = function (data) {
@@ -134,7 +134,7 @@
         request.send();
     };
 
-    // Iterate all of the cards and attempt to get the latest forecast data
+    // Iterate all of the cards and attempt to get the latest timetable data
     app.updateSchedules = function () {
         var keys = Object.keys(app.visibleCards);
         keys.forEach(function (key) {
@@ -143,8 +143,8 @@
     };
 
     /*
-     * Fake weather data that is presented when the user first uses the app,
-     * or when the user has not saved any cities. See startup code for more
+     * Fake timetable data that is presented when the user first uses the app,
+     * or when the user has not saved any stations. See startup code for more
      * discussion.
      */
 
