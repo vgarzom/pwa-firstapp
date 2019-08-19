@@ -182,6 +182,5 @@
 
     app.getSchedule('metros/1/bastille/A', 'Bastille, Direction La Défense');
     app.selectedTimetables = [
-        {key: initialStationTimetable.key, label: initialStationTimetable.label}
     ];
 })();
