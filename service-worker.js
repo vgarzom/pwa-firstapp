@@ -34,7 +34,6 @@ self.addEventListener('install', (evt) => {
       return cache.addAll(FILES_TO_CACHE);
     })
   );
-
   self.skipWaiting();
 });
 

@@ -1,6 +1,15 @@
 (function () {
     'use strict';
 
+    /**
+         * Incluimos base de datos indexedDb
+         *
+         */
+    var db = new Dexie("metro_database");
+    db.version(1).stores({
+        metros: 'key, label, created, schedules'
+    });
+
     var app = {
         isLoading: true,
         visibleCards: {},
@@ -39,7 +48,7 @@
             app.selectedTimetables = [];
         }
         app.getSchedule(key, label);
-        app.selectedTimetables.push({key: key, label: label});
+        app.selectedTimetables.push({ key: key, label: label });
         app.toggleAddDialog(false);
     });
 
@@ -88,10 +97,10 @@
         card.querySelector('.card-last-updated').textContent = data.created;
 
         var scheduleUIs = card.querySelectorAll('.schedule');
-        for(var i = 0; i<4; i++) {
+        for (var i = 0; i < 4; i++) {
             var schedule = schedules[i];
             var scheduleUI = scheduleUIs[i];
-            if(schedule && scheduleUI) {
+            if (schedule && scheduleUI) {
                 scheduleUI.querySelector('.message').textContent = schedule.message;
             }
         }
@@ -123,6 +132,12 @@
                     result.label = label;
                     result.created = response._metadata.date;
                     result.schedules = response.result.schedules;
+                    db.metros.add({
+                        key: result.key,
+                        label: result.label,
+                        created: result.created,
+                        schedules: result.schedules
+                    });
                     app.updateTimetableCard(result);
                 }
             } else {
@@ -180,7 +195,24 @@
      *   SimpleDB (https://gist.github.com/inexorabletash/c8069c042b734519680c)
      ************************************************************************/
 
-    app.getSchedule('metros/1/bastille/A', 'Bastille, Direction La Défense');
-    app.selectedTimetables = [
-    ];
+    /*    app.getSchedule('metros/1/bastille/A', 'Bastille, Direction La Défense');
+        app.selectedTimetables = [
+        ];
+    */
+
+    app.isFirstTime = function () {
+        let length = 0;
+        db.metros.each(friend => {
+            app.updateTimetableCard(friend);
+            length++
+        });
+        setTimeout(() => {
+            if (length === 0) {
+                app.getSchedule('metros/1/bastille/A', 'Bastille, Direction La Défense');
+            }
+        }, 500);
+    }
+
+
+    app.isFirstTime();
 })();
