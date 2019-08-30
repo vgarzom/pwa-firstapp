@@ -12,6 +12,7 @@
 
     var app = {
         isLoading: true,
+        firstTime: true,
         visibleCards: {},
         selectedTimetables: [],
         spinner: document.querySelector('.loader'),
@@ -127,6 +128,10 @@
         request.onreadystatechange = function () {
             if (request.readyState === XMLHttpRequest.DONE) {
                 if (request.status === 200) {
+                    if (app.firstTime) {
+                        window.apiLoadTime = performance.now();
+                        app.firstTime = false;
+                    }
                     var response = JSON.parse(request.response);
                     var result = {};
                     result.key = key;
@@ -207,11 +212,10 @@
             app.updateTimetableCard(friend);
             length++
         });
-        setTimeout(() => {
-            if (length === 0) {
-                app.getSchedule('metros/1/bastille/A', 'Bastille, Direction La Défense');
-            }
-        }, 500);
+
+        if (app.firstTime) {
+            app.getSchedule('metros/1/bastille/A', 'Bastille, Direction La Défense');
+        }
     }
 
 
