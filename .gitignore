@@ -63,3 +63,8 @@ node_modules/
 
 # dotenv environment variables file
 .env
+
+lighthouse_config/*.report.html
+lighthouse_config/node_modules
+
+.DS_Store
